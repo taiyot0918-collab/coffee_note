@@ -1,0 +1,2 @@
+module CafeShopsHelper
+end

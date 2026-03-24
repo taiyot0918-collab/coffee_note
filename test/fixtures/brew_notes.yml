@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  coffee_bean: one
+  tool: MyString
+  dose: 9.99
+  water_amount: 9.99
+  water_temp: 1
+  brew_time: 1
+  taste_memo: MyText
+  rating: 1
+
+two:
+  user: two
+  coffee_bean: two
+  tool: MyString
+  dose: 9.99
+  water_amount: 9.99
+  water_temp: 1
+  brew_time: 1
+  taste_memo: MyText
+  rating: 1
