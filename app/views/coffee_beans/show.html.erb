@@ -1,0 +1,28 @@
+<div class="bg-white rounded-xl shadow-sm p-6 max-w-lg">
+  <h1 class="text-2xl font-bold text-amber-900 mb-4"><%= @coffee_bean.name %></h1>
+
+  <dl class="grid grid-cols-2 gap-4 text-sm">
+    <div>
+      <dt class="text-gray-400">産地</dt>
+      <dd class="font-medium"><%= @coffee_bean.origin %></dd>
+    </div>
+    <div>
+      <dt class="text-gray-400">品種</dt>
+      <dd class="font-medium"><%= @coffee_bean.variety %></dd>
+    </div>
+    <div>
+      <dt class="text-gray-400">精製方法</dt>
+      <dd class="font-medium"><%= @coffee_bean.process %></dd>
+    </div>
+    <div>
+      <dt class="text-gray-400">焙煎度</dt>
+      <dd class="font-medium"><%= @coffee_bean.roast_level %></dd>
+    </div>
+  </dl>
+
+  <div class="flex gap-4 mt-6 text-sm">
+    <%= link_to "編集", edit_coffee_bean_path(@coffee_bean), class: "text-amber-600 hover:underline" %>
+    <%= link_to "削除", @coffee_bean, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "text-red-400 hover:underline" %>
+    <%= link_to "← 一覧に戻る", coffee_beans_path, class: "text-gray-400 hover:underline" %>
+  </div>
+</div>

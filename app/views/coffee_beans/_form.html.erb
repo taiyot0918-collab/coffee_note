@@ -1,0 +1,41 @@
+<%= form_with model: @coffee_bean, class: "grid gap-4" do |f| %>
+
+  <%# エラーメッセージ %>
+  <% if @coffee_bean.errors.any? %>
+    <div class="bg-red-50 text-red-600 text-sm rounded-lg p-3">
+      <% @coffee_bean.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, "豆の名前", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :name, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <div>
+    <%= f.label :origin, "産地", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :origin, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <div>
+    <%= f.label :variety, "品種", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :variety, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <div>
+    <%= f.label :process, "精製方法", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :process, placeholder: "ウォッシュド・ナチュラルなど", class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <div>
+    <%= f.label :roast_level, "焙煎度", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.select :roast_level, [["浅煎り", 1], ["中浅煎り", 2], ["中煎り", 3], ["中深煎り", 4], ["深煎り", 5]],
+        { include_blank: "選択してください" },
+        class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <%= f.submit class: "bg-amber-700 hover:bg-amber-800 text-white font-semibold py-2 rounded-lg cursor-pointer" %>
+
+<% end %>
