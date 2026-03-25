@@ -1,26 +1,51 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Coffee Note" %></title>
+    <title>Coffee Note</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= yield :head %>
-
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-amber-50 min-h-screen">
+
+    <%# ナビゲーションバー %>
+    <nav class="bg-amber-900 text-white px-6 py-4 flex justify-between items-center">
+      <a href="/" class="text-xl font-bold">☕ Coffee Note</a>
+
+      <div class="flex gap-4">
+        <% if user_signed_in? %>
+          <%# ログイン中のメニュー %>
+          <%= link_to "豆", coffee_beans_path, class: "hover:underline" %>
+          <%= link_to "抽出", brew_notes_path, class: "hover:underline" %>
+          <%= link_to "カフェ", cafe_shops_path, class: "hover:underline" %>
+          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "hover:underline" %>
+        <% else %>
+          <%# 未ログインのメニュー %>
+          <%= link_to "ログイン", new_user_session_path, class: "hover:underline" %>
+          <%= link_to "新規登録", new_user_registration_path, class: "hover:underline" %>
+        <% end %>
+      </div>
+    </nav>
+
+    <%# フラッシュメッセージ（登録しました・削除しましたなどの通知） %>
+    <% if notice %>
+      <div class="bg-green-100 text-green-800 px-6 py-3 text-sm">
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if alert %>
+      <div class="bg-red-100 text-red-800 px-6 py-3 text-sm">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <%# 各ページのコンテンツがここに入る %>
+    <main class="max-w-4xl mx-auto px-6 py-8">
       <%= yield %>
     </main>
+
   </body>
 </html>

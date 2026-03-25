@@ -1,0 +1,53 @@
+<div class="max-w-md mx-auto mt-16">
+  <div class="bg-white rounded-2xl shadow-md p-8">
+
+    <%# タイトル %>
+    <h1 class="text-2xl font-bold text-amber-900 text-center mb-2">☕ Coffee Note</h1>
+    <p class="text-center text-gray-400 text-sm mb-8">新規登録</p>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+
+      <%# エラーメッセージ %>
+      <% if resource.errors.any? %>
+        <div class="bg-red-50 text-red-600 text-sm rounded-lg p-3 mb-4">
+          <% resource.errors.full_messages.each do |msg| %>
+            <p><%= msg %></p>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%# メールアドレス %>
+      <div class="mb-4">
+        <%= f.label :email, "メールアドレス", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email",
+            class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+      </div>
+
+      <%# パスワード %>
+      <div class="mb-4">
+        <%= f.label :password, "パスワード", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.password_field :password, autocomplete: "new-password",
+            class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+        <p class="text-xs text-gray-400 mt-1">6文字以上</p>
+      </div>
+
+      <%# パスワード確認 %>
+      <div class="mb-6">
+        <%= f.label :password_confirmation, "パスワード（確認）", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password",
+            class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+      </div>
+
+      <%# 登録ボタン %>
+      <%= f.submit "登録する", class: "w-full bg-amber-700 hover:bg-amber-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer" %>
+
+    <% end %>
+
+    <%# ログインリンク %>
+    <p class="text-center text-sm text-gray-400 mt-6">
+      すでにアカウントをお持ちの方は
+      <%= link_to "ログイン", new_user_session_path, class: "text-amber-600 hover:underline" %>
+    </p>
+
+  </div>
+</div>

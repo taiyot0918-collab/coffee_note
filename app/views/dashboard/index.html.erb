@@ -1,4 +1,73 @@
-<div>
-  <h1 class="font-bold text-4xl">Dashboard#index</h1>
-  <p>Find me in app/views/dashboard/index.html.erb</p>
-</div>
+<h1 class="text-2xl font-bold text-amber-900 mb-6">☕ ダッシュボード</h1>
+
+<%# コーヒー豆セクション %>
+<section class="mb-8">
+  <div class="flex justify-between items-center mb-3">
+    <h2 class="text-lg font-semibold text-amber-800">最近のコーヒー豆</h2>
+    <%= link_to "+ 追加", new_coffee_bean_path, class: "text-sm text-amber-600 hover:underline" %>
+  </div>
+
+  <% if @coffee_beans.any? %>
+    <div class="grid gap-3">
+      <% @coffee_beans.each do |bean| %>
+        <div class="bg-white rounded-lg p-4 shadow-sm flex justify-between items-center">
+          <div>
+            <p class="font-medium"><%= bean.name %></p>
+            <p class="text-sm text-gray-500"><%= bean.origin %></p>
+          </div>
+          <%= link_to "詳細", bean, class: "text-amber-600 text-sm hover:underline" %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-400 text-sm">まだ登録されていません</p>
+  <% end %>
+</section>
+
+<%# 抽出ノートセクション %>
+<section class="mb-8">
+  <div class="flex justify-between items-center mb-3">
+    <h2 class="text-lg font-semibold text-amber-800">最近の抽出ノート</h2>
+    <%= link_to "+ 追加", new_brew_note_path, class: "text-sm text-amber-600 hover:underline" %>
+  </div>
+
+  <% if @brew_notes.any? %>
+    <div class="grid gap-3">
+      <% @brew_notes.each do |note| %>
+        <div class="bg-white rounded-lg p-4 shadow-sm flex justify-between items-center">
+          <div>
+            <p class="font-medium"><%= note.tool %></p>
+            <p class="text-sm text-gray-500">評価: <%= note.rating %>/5</p>
+          </div>
+          <%= link_to "詳細", note, class: "text-amber-600 text-sm hover:underline" %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-400 text-sm">まだ登録されていません</p>
+  <% end %>
+</section>
+
+<%# カフェ記録セクション %>
+<section>
+  <div class="flex justify-between items-center mb-3">
+    <h2 class="text-lg font-semibold text-amber-800">最近のカフェ記録</h2>
+    <%= link_to "+ 追加", new_cafe_shop_path, class: "text-sm text-amber-600 hover:underline" %>
+  </div>
+
+  <% if @cafe_shops.any? %>
+    <div class="grid gap-3">
+      <% @cafe_shops.each do |cafe| %>
+        <div class="bg-white rounded-lg p-4 shadow-sm flex justify-between items-center">
+          <div>
+            <p class="font-medium"><%= cafe.name %></p>
+            <p class="text-sm text-gray-500"><%= cafe.address %></p>
+          </div>
+          <%= link_to "詳細", cafe, class: "text-amber-600 text-sm hover:underline" %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-400 text-sm">まだ登録されていません</p>
+  <% end %>
+</section>
