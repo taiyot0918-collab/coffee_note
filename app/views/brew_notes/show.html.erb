@@ -1,0 +1,43 @@
+<div class="bg-white rounded-xl shadow-sm p-6 max-w-lg">
+  <h1 class="text-2xl font-bold text-amber-900 mb-4">📝 <%= @brew_note.tool %></h1>
+
+  <dl class="grid grid-cols-2 gap-4 text-sm">
+    <div>
+      <dt class="text-gray-400">使用した豆</dt>
+      <dd class="font-medium"><%= @brew_note.coffee_bean&.name %></dd>
+    </div>
+    <div>
+      <dt class="text-gray-400">豆量</dt>
+      <dd class="font-medium"><%= @brew_note.dose %>g</dd>
+    </div>
+    <div>
+      <dt class="text-gray-400">湯量</dt>
+      <dd class="font-medium"><%= @brew_note.water_amount %>ml</dd>
+    </div>
+    <div>
+      <dt class="text-gray-400">湯温</dt>
+      <dd class="font-medium"><%= @brew_note.water_temp %>℃</dd>
+    </div>
+    <div>
+      <dt class="text-gray-400">抽出時間</dt>
+      <dd class="font-medium"><%= @brew_note.brew_time %>秒</dd>
+    </div>
+    <div>
+      <dt class="text-gray-400">評価</dt>
+      <dd class="font-medium"><%= @brew_note.rating %>/5</dd>
+    </div>
+  </dl>
+
+  <% if @brew_note.taste_memo.present? %>
+    <div class="mt-4">
+      <p class="text-gray-400 text-sm">味メモ</p>
+      <p class="text-sm mt-1"><%= @brew_note.taste_memo %></p>
+    </div>
+  <% end %>
+
+  <div class="flex gap-4 mt-6 text-sm">
+    <%= link_to "編集", edit_brew_note_path(@brew_note), class: "text-amber-600 hover:underline" %>
+    <%= link_to "削除", @brew_note, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "text-red-400 hover:underline" %>
+    <%= link_to "← 一覧に戻る", brew_notes_path, class: "text-gray-400 hover:underline" %>
+  </div>
+</div>
