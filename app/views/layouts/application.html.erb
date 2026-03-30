@@ -5,45 +5,56 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-amber-50 min-h-screen">
+  <%# bg-stone-100: ページ全体の背景色（温かみのあるオフホワイト） %>
+  <%# min-h-screen: 最低でも画面の高さいっぱいに広げる %>
+  <body class="bg-stone-100 min-h-screen text-gray-900">
 
     <%# ナビゲーションバー %>
-    <nav class="bg-amber-900 text-white px-6 py-4 flex justify-between items-center">
-      <a href="/" class="text-xl font-bold">☕ Coffee Note</a>
+    <%# bg-neutral-900: 黒に近いダーク背景 %>
+    <%# sticky top-0 z-10: スクロールしても上部に固定 %>
+    <nav class="bg-neutral-900 text-white sticky top-0 z-10">
+      <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
 
-      <div class="flex gap-4">
-        <% if user_signed_in? %>
-          <%# ログイン中のメニュー %>
-          <%= link_to "豆", coffee_beans_path, class: "hover:underline" %>
-          <%= link_to "抽出", brew_notes_path, class: "hover:underline" %>
-          <%= link_to "カフェ", cafe_shops_path, class: "hover:underline" %>
-          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "hover:underline" %>
-        <% else %>
-          <%# 未ログインのメニュー %>
-          <%= link_to "ログイン", new_user_session_path, class: "hover:underline" %>
-          <%= link_to "新規登録", new_user_registration_path, class: "hover:underline" %>
-        <% end %>
+        <%# ブランド名: tracking-widestで文字間隔を広げてスタイリッシュに %>
+        <%= link_to "COFFEE NOTE", root_path, class: "text-sm font-medium tracking-widest text-white hover:text-stone-300 transition" %>
+
+        <div class="flex gap-6 text-sm">
+          <% if user_signed_in? %>
+            <%= link_to "豆", coffee_beans_path, class: "text-stone-400 hover:text-white transition" %>
+            <%= link_to "抽出", brew_notes_path, class: "text-stone-400 hover:text-white transition" %>
+            <%= link_to "カフェ", cafe_shops_path, class: "text-stone-400 hover:text-white transition" %>
+            <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-white hover:text-stone-300 transition" %>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path, class: "text-stone-400 hover:text-white transition" %>
+            <%= link_to "新規登録", new_user_registration_path, class: "text-white hover:text-stone-300 transition" %>
+          <% end %>
+        </div>
+
       </div>
     </nav>
 
-    <%# フラッシュメッセージ（登録しました・削除しましたなどの通知） %>
+    <%# フラッシュメッセージ（登録・削除などの通知） %>
     <% if notice %>
-      <div class="bg-green-100 text-green-800 px-6 py-3 text-sm">
+      <%# bg-emerald-50: 薄い緑背景で成功を表現 %>
+      <div class="bg-emerald-50 text-emerald-800 text-sm px-6 py-3 border-b border-emerald-200">
         <%= notice %>
       </div>
     <% end %>
     <% if alert %>
-      <div class="bg-red-100 text-red-800 px-6 py-3 text-sm">
+      <%# bg-red-50: 薄い赤背景でエラーを表現 %>
+      <div class="bg-red-50 text-red-800 text-sm px-6 py-3 border-b border-red-200">
         <%= alert %>
       </div>
     <% end %>
 
-    <%# 各ページのコンテンツがここに入る %>
-    <main class="max-w-4xl mx-auto px-6 py-8">
+    <%# メインコンテンツ %>
+    <%# max-w-4xl mx-auto: 最大幅を決めて中央寄せ %>
+    <main class="max-w-4xl mx-auto px-6 py-10">
       <%= yield %>
     </main>
 

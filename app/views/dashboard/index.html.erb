@@ -1,73 +1,104 @@
-<h1 class="text-2xl font-bold text-amber-900 mb-6">☕ ダッシュボード</h1>
+<%# ページヘッダー %>
+<div class="flex justify-between items-end mb-10">
+  <div>
+    <h1 class="text-2xl font-medium">ダッシュボード</h1>
+    <%# current_user.email: Deviseが用意するメソッドでログイン中のメールを表示 %>
+    <p class="text-sm text-gray-400 mt-1">おかえりなさい、<%= current_user.email %></p>
+  </div>
+</div>
 
-<%# コーヒー豆セクション %>
-<section class="mb-8">
-  <div class="flex justify-between items-center mb-3">
-    <h2 class="text-lg font-semibold text-amber-800">最近のコーヒー豆</h2>
-    <%= link_to "+ 追加", new_coffee_bean_path, class: "text-sm text-amber-600 hover:underline" %>
+<%# 統計カード: grid-cols-3で3列に並べる %>
+<div class="grid grid-cols-3 gap-3 mb-12">
+
+  <%# bg-stone-200: 少し濃いめのオフホワイトで統計カードを表現 %>
+  <div class="bg-stone-200 rounded-xl p-5">
+    <p class="text-xs text-gray-500 mb-2">コーヒー豆</p>
+    <%# current_user.coffee_beans.count: DBから件数を取得 %>
+    <p class="text-3xl font-medium"><%= current_user.coffee_beans.count %></p>
+  </div>
+
+  <div class="bg-stone-200 rounded-xl p-5">
+    <p class="text-xs text-gray-500 mb-2">抽出ノート</p>
+    <p class="text-3xl font-medium"><%= current_user.brew_notes.count %></p>
+  </div>
+
+  <div class="bg-stone-200 rounded-xl p-5">
+    <p class="text-xs text-gray-500 mb-2">カフェ記録</p>
+    <p class="text-3xl font-medium"><%= current_user.cafe_shops.count %></p>
+  </div>
+
+</div>
+
+<%# 最近のコーヒー豆セクション %>
+<div class="mb-10">
+  <div class="flex justify-between items-center mb-4">
+    <%# uppercase tracking-widest: セクションラベルをスタイリッシュに %>
+    <p class="text-xs font-medium text-gray-400 uppercase tracking-widest">最近のコーヒー豆</p>
+    <%= link_to "+ 追加", new_coffee_bean_path, class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
   </div>
 
   <% if @coffee_beans.any? %>
-    <div class="grid gap-3">
-      <% @coffee_beans.each do |bean| %>
-        <div class="bg-white rounded-lg p-4 shadow-sm flex justify-between items-center">
-          <div>
-            <p class="font-medium"><%= bean.name %></p>
-            <p class="text-sm text-gray-500"><%= bean.origin %></p>
-          </div>
-          <%= link_to "詳細", bean, class: "text-amber-600 text-sm hover:underline" %>
+    <% @coffee_beans.each do |bean| %>
+      <%# bg-white border border-gray-100: シンプルな白カード %>
+      <%# hover:border-gray-300: ホバー時にボーダーを少し濃くしてインタラクティブに %>
+      <div class="bg-white border border-gray-100 hover:border-gray-300 rounded-xl px-5 py-4 mb-2 flex justify-between items-center transition">
+        <div>
+          <p class="text-sm font-medium"><%= bean.name %></p>
+          <p class="text-xs text-gray-400 mt-1"><%= bean.origin %></p>
         </div>
-      <% end %>
-    </div>
+        <%= link_to "詳細 →", bean, class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
+      </div>
+    <% end %>
   <% else %>
-    <p class="text-gray-400 text-sm">まだ登録されていません</p>
+    <p class="text-sm text-gray-300">まだ登録されていません</p>
   <% end %>
-</section>
+</div>
 
-<%# 抽出ノートセクション %>
-<section class="mb-8">
-  <div class="flex justify-between items-center mb-3">
-    <h2 class="text-lg font-semibold text-amber-800">最近の抽出ノート</h2>
-    <%= link_to "+ 追加", new_brew_note_path, class: "text-sm text-amber-600 hover:underline" %>
+<hr class="border-gray-100 mb-10">
+
+<%# 最近の抽出ノートセクション %>
+<div class="mb-10">
+  <div class="flex justify-between items-center mb-4">
+    <p class="text-xs font-medium text-gray-400 uppercase tracking-widest">最近の抽出ノート</p>
+    <%= link_to "+ 追加", new_brew_note_path, class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
   </div>
 
   <% if @brew_notes.any? %>
-    <div class="grid gap-3">
-      <% @brew_notes.each do |note| %>
-        <div class="bg-white rounded-lg p-4 shadow-sm flex justify-between items-center">
-          <div>
-            <p class="font-medium"><%= note.tool %></p>
-            <p class="text-sm text-gray-500">評価: <%= note.rating %>/5</p>
-          </div>
-          <%= link_to "詳細", note, class: "text-amber-600 text-sm hover:underline" %>
+    <% @brew_notes.each do |note| %>
+      <div class="bg-white border border-gray-100 hover:border-gray-300 rounded-xl px-5 py-4 mb-2 flex justify-between items-center transition">
+        <div>
+          <p class="text-sm font-medium"><%= note.tool %></p>
+          <%# &.nameは安全呼び出し演算子: coffee_beanがnilでもエラーにならない %>
+          <p class="text-xs text-gray-400 mt-1"><%= note.coffee_bean&.name %> · 評価 <%= note.rating %>/5</p>
         </div>
-      <% end %>
-    </div>
+        <%= link_to "詳細 →", note, class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
+      </div>
+    <% end %>
   <% else %>
-    <p class="text-gray-400 text-sm">まだ登録されていません</p>
+    <p class="text-sm text-gray-300">まだ登録されていません</p>
   <% end %>
-</section>
+</div>
 
-<%# カフェ記録セクション %>
-<section>
-  <div class="flex justify-between items-center mb-3">
-    <h2 class="text-lg font-semibold text-amber-800">最近のカフェ記録</h2>
-    <%= link_to "+ 追加", new_cafe_shop_path, class: "text-sm text-amber-600 hover:underline" %>
+<hr class="border-gray-100 mb-10">
+
+<%# 最近のカフェ記録セクション %>
+<div>
+  <div class="flex justify-between items-center mb-4">
+    <p class="text-xs font-medium text-gray-400 uppercase tracking-widest">最近のカフェ記録</p>
+    <%= link_to "+ 追加", new_cafe_shop_path, class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
   </div>
 
   <% if @cafe_shops.any? %>
-    <div class="grid gap-3">
-      <% @cafe_shops.each do |cafe| %>
-        <div class="bg-white rounded-lg p-4 shadow-sm flex justify-between items-center">
-          <div>
-            <p class="font-medium"><%= cafe.name %></p>
-            <p class="text-sm text-gray-500"><%= cafe.address %></p>
-          </div>
-          <%= link_to "詳細", cafe, class: "text-amber-600 text-sm hover:underline" %>
+    <% @cafe_shops.each do |cafe| %>
+      <div class="bg-white border border-gray-100 hover:border-gray-300 rounded-xl px-5 py-4 mb-2 flex justify-between items-center transition">
+        <div>
+          <p class="text-sm font-medium"><%= cafe.name %></p>
+          <p class="text-xs text-gray-400 mt-1"><%= cafe.address %></p>
         </div>
-      <% end %>
-    </div>
+        <%= link_to "詳細 →", cafe, class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
+      </div>
+    <% end %>
   <% else %>
-    <p class="text-gray-400 text-sm">まだ登録されていません</p>
+    <p class="text-sm text-gray-300">まだ登録されていません</p>
   <% end %>
-</section>
+</div>
