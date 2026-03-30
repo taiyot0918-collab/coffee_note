@@ -1,0 +1,25 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold text-amber-900">☕ カフェ記録</h1>
+  <%= link_to "+ 新しいカフェを追加", new_cafe_shop_path, class: "bg-amber-700 hover:bg-amber-800 text-white text-sm px-4 py-2 rounded-lg" %>
+</div>
+
+<% if @cafe_shops.any? %>
+  <div class="grid gap-4">
+    <% @cafe_shops.each do |cafe| %>
+      <div class="bg-white rounded-xl shadow-sm p-5 flex justify-between items-center">
+        <div>
+          <p class="font-semibold text-gray-800"><%= cafe.name %></p>
+          <p class="text-sm text-gray-500">
+            <%= cafe.address %> ／ <%= cafe.visit_date %>
+          </p>
+        </div>
+        <div class="flex gap-3 text-sm">
+          <%= link_to "詳細", cafe, class: "text-amber-600 hover:underline" %>
+          <%= link_to "編集", edit_cafe_shop_path(cafe), class: "text-gray-400 hover:underline" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-gray-400">まだ登録されていません</p>
+<% end %>

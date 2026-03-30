@@ -1,0 +1,42 @@
+<%= form_with model: @cafe_shop, class: "grid gap-4" do |f| %>
+
+  <%# エラーメッセージ %>
+  <% if @cafe_shop.errors.any? %>
+    <div class="bg-red-50 text-red-600 text-sm rounded-lg p-3">
+      <% @cafe_shop.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, "カフェ名", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :name, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <div>
+    <%= f.label :address, "住所", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :address, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <div>
+    <%= f.label :visit_date, "訪問日", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.date_field :visit_date, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <div>
+    <%= f.label :memo, "メモ", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_area :memo, rows: 3, placeholder: "雰囲気・おすすめメニューなど",
+        class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <div>
+    <%= f.label :rating, "評価", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.select :rating, [["⭐ 1", 1], ["⭐⭐ 2", 2], ["⭐⭐⭐ 3", 3], ["⭐⭐⭐⭐ 4", 4], ["⭐⭐⭐⭐⭐ 5", 5]],
+        { include_blank: "選択してください" },
+        class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+  </div>
+
+  <%= f.submit class: "bg-amber-700 hover:bg-amber-800 text-white font-semibold py-2 rounded-lg cursor-pointer" %>
+
+<% end %>
