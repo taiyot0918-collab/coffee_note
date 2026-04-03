@@ -1,25 +1,29 @@
-<div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold text-amber-900">📝 抽出ノート</h1>
-  <%= link_to "+ 新しいノートを追加", new_brew_note_path, class: "bg-amber-700 hover:bg-amber-800 text-white text-sm px-4 py-2 rounded-lg" %>
+<div class="flex justify-between items-end mb-10">
+  <div>
+    <h1 class="text-2xl font-medium">抽出ノート</h1>
+    <p class="text-sm text-gray-400 mt-1"><%= @brew_notes.count %>件登録済み</p>
+  </div>
+  <%= link_to "+ 新しいノートを追加", new_brew_note_path, class: "bg-neutral-900 text-white text-xs px-4 py-2 rounded-lg hover:bg-neutral-700 transition" %>
 </div>
 
 <% if @brew_notes.any? %>
-  <div class="grid gap-4">
-    <% @brew_notes.each do |note| %>
-      <div class="bg-white rounded-xl shadow-sm p-5 flex justify-between items-center">
-        <div>
-          <p class="font-semibold text-gray-800"><%= note.tool %></p>
-          <p class="text-sm text-gray-500">
-            <%= note.coffee_bean&.name %> ／ 評価: <%= note.rating %>/5
-          </p>
-        </div>
-        <div class="flex gap-3 text-sm">
-          <%= link_to "詳細", note, class: "text-amber-600 hover:underline" %>
-          <%= link_to "編集", edit_brew_note_path(note), class: "text-gray-400 hover:underline" %>
-        </div>
+  <% @brew_notes.each do |note| %>
+    <div class="bg-white border border-gray-100 hover:border-gray-300 rounded-xl px-5 py-4 mb-2 flex justify-between items-center transition">
+      <div>
+        <p class="text-sm font-medium"><%= note.tool %></p>
+        <p class="text-xs text-gray-400 mt-1">
+          <%= note.coffee_bean&.name.presence || "豆未設定" %>
+          <% if note.rating.present? %>
+            · 評価 <%= note.rating %>/5
+          <% end %>
+        </p>
       </div>
-    <% end %>
-  </div>
+      <div class="flex gap-4">
+        <%= link_to "詳細 →", note, class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
+        <%= link_to "編集", edit_brew_note_path(note), class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
+      </div>
+    </div>
+  <% end %>
 <% else %>
-  <p class="text-gray-400">まだ登録されていません</p>
+  <p class="text-sm text-gray-300">まだ登録されていません</p>
 <% end %>

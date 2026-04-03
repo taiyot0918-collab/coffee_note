@@ -1,7 +1,7 @@
-<h1 class="text-2xl font-bold text-amber-900 mb-6">☕ カフェを追加</h1>
+<%= link_to "← 一覧に戻る", cafe_shops_path, class: "text-xs text-gray-400 hover:text-gray-700 transition mb-8 inline-block" %>
 
-<div class="bg-white rounded-xl shadow-sm p-6 max-w-lg">
+<h1 class="text-2xl font-medium mb-8">カフェを追加</h1>
+
+<div class="bg-white border border-gray-100 rounded-xl p-8">
   <%= render "form" %>
 </div>
-
-<%= link_to "← 一覧に戻る", cafe_shops_path, class: "text-sm text-gray-400 hover:underline mt-4 inline-block" %>

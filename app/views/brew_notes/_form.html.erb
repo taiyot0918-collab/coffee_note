@@ -1,64 +1,62 @@
-<%= form_with model: @brew_note, class: "grid gap-4" do |f| %>
+<%= form_with model: @brew_note, class: "grid gap-5" do |f| %>
 
-  <%# エラーメッセージ %>
   <% if @brew_note.errors.any? %>
-    <div class="bg-red-50 text-red-600 text-sm rounded-lg p-3">
+    <div class="bg-red-50 text-red-600 text-sm rounded-lg p-4">
       <% @brew_note.errors.full_messages.each do |msg| %>
         <p><%= msg %></p>
       <% end %>
     </div>
   <% end %>
 
-  <%# 使用した豆をプルダウンで選択 %>
   <div>
-    <%= f.label :coffee_bean_id, "使用した豆", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.label :coffee_bean_id, "使用した豆", class: "block text-xs text-gray-500 mb-1" %>
     <%= f.collection_select :coffee_bean_id, current_user.coffee_beans.order(:name), :id, :name,
         { include_blank: "選択してください" },
-        class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+        class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
   <div>
-    <%= f.label :tool, "器具", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.label :tool, "器具", class: "block text-xs text-gray-500 mb-1" %>
     <%= f.select :tool, ["V60", "Aeropress", "フレンチプレス", "モカポット", "エスプレッソ", "その他"],
         { include_blank: "選択してください" },
-        class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+        class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <%= f.label :dose, "豆量 (g)", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.number_field :dose, step: 0.1, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+      <%= f.label :dose, "豆量 (g)", class: "block text-xs text-gray-500 mb-1" %>
+      <%= f.number_field :dose, step: 0.1, class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
     </div>
     <div>
-      <%= f.label :water_amount, "湯量 (ml)", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.number_field :water_amount, step: 0.1, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+      <%= f.label :water_amount, "湯量 (ml)", class: "block text-xs text-gray-500 mb-1" %>
+      <%= f.number_field :water_amount, step: 0.1, class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
     </div>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <%= f.label :water_temp, "湯温 (℃)", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.number_field :water_temp, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+      <%= f.label :water_temp, "湯温 (℃)", class: "block text-xs text-gray-500 mb-1" %>
+      <%= f.number_field :water_temp, class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
     </div>
     <div>
-      <%= f.label :brew_time, "抽出時間 (秒)", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.number_field :brew_time, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+      <%= f.label :brew_time, "抽出時間 (秒)", class: "block text-xs text-gray-500 mb-1" %>
+      <%= f.number_field :brew_time, class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
     </div>
   </div>
 
   <div>
-    <%= f.label :taste_memo, "味メモ", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.label :taste_memo, "味メモ", class: "block text-xs text-gray-500 mb-1" %>
     <%= f.text_area :taste_memo, rows: 3, placeholder: "酸味・甘味・苦味など自由に",
-        class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+        class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
   <div>
-    <%= f.label :rating, "評価", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= f.select :rating, [["⭐ 1", 1], ["⭐⭐ 2", 2], ["⭐⭐⭐ 3", 3], ["⭐⭐⭐⭐ 4", 4], ["⭐⭐⭐⭐⭐ 5", 5]],
+    <%= f.label :rating, "評価", class: "block text-xs text-gray-500 mb-1" %>
+    <%= f.select :rating, [["★ 1", 1], ["★★ 2", 2], ["★★★ 3", 3], ["★★★★ 4", 4], ["★★★★★ 5", 5]],
         { include_blank: "選択してください" },
-        class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+        class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
-  <%= f.submit class: "bg-amber-700 hover:bg-amber-800 text-white font-semibold py-2 rounded-lg cursor-pointer" %>
+  <%= f.submit class: "bg-neutral-900 hover:bg-neutral-700 text-white text-sm font-medium py-2 rounded-lg cursor-pointer transition" %>
 
 <% end %>
