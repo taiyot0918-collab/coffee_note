@@ -1,23 +1,32 @@
-<div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold text-amber-900">🫘 コーヒー豆</h1>
-  <%= link_to "+ 新しい豆を追加", new_coffee_bean_path, class: "bg-amber-700 hover:bg-amber-800 text-white text-sm px-4 py-2 rounded-lg" %>
+<%# ページヘッダー %>
+<div class="flex justify-between items-end mb-10">
+  <div>
+    <h1 class="text-2xl font-medium">コーヒー豆</h1>
+    <p class="text-sm text-gray-400 mt-1"><%= @coffee_beans.count %>件登録済み</p>
+  </div>
+  <%# bg-neutral-900: ナビと同じ黒でボタンを統一感出す %>
+  <%= link_to "+ 新しい豆を追加", new_coffee_bean_path, class: "bg-neutral-900 text-white text-xs px-4 py-2 rounded-lg hover:bg-neutral-700 transition" %>
 </div>
 
 <% if @coffee_beans.any? %>
-  <div class="grid gap-4">
-    <% @coffee_beans.each do |bean| %>
-      <div class="bg-white rounded-xl shadow-sm p-5 flex justify-between items-center">
-        <div>
-          <p class="font-semibold text-gray-800"><%= bean.name %></p>
-          <p class="text-sm text-gray-500">産地: <%= bean.origin %> ／ 品種: <%= bean.variety %></p>
-        </div>
-        <div class="flex gap-3 text-sm">
-          <%= link_to "詳細", bean, class: "text-amber-600 hover:underline" %>
-          <%= link_to "編集", edit_coffee_bean_path(bean), class: "text-gray-400 hover:underline" %>
-        </div>
+  <% @coffee_beans.each do |bean| %>
+    <div class="bg-white border border-gray-100 hover:border-gray-300 rounded-xl px-5 py-4 mb-2 flex justify-between items-center transition">
+      <div>
+        <p class="text-sm font-medium"><%= bean.name %></p>
+        <p class="text-xs text-gray-400 mt-1">
+          <%# present?: nilや空文字でなければ表示する %>
+          <%= bean.origin.present? ? bean.origin : "産地未登録" %>
+          <% if bean.roast_level.present? %>
+            · <%= ["", "浅煎り", "中浅煎り", "中煎り", "中深煎り", "深煎り"][bean.roast_level] %>
+          <% end %>
+        </p>
       </div>
-    <% end %>
-  </div>
+      <div class="flex gap-4">
+        <%= link_to "詳細 →", bean, class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
+        <%= link_to "編集", edit_coffee_bean_path(bean), class: "text-xs text-gray-400 hover:text-gray-700 transition" %>
+      </div>
+    </div>
+  <% end %>
 <% else %>
-  <p class="text-gray-400">まだ登録されていません</p>
+  <p class="text-sm text-gray-300">まだ登録されていません</p>
 <% end %>

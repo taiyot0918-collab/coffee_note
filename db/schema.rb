@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_24_070546) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_31_070714) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "brew_notes", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "coffee_bean_id", null: false
+    t.bigint "coffee_bean_id"
     t.string "tool"
     t.decimal "dose"
     t.decimal "water_amount"
@@ -51,6 +51,18 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_24_070546) do
     t.integer "roast_level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "flavor"
+    t.decimal "aftertaste"
+    t.decimal "acidity"
+    t.decimal "sweetness"
+    t.decimal "mouthfeel"
+    t.decimal "acidity_ripeness"
+    t.decimal "acidity_complexity"
+    t.decimal "thickness"
+    t.decimal "roughness"
+    t.decimal "dryness"
+    t.decimal "astringency"
+    t.decimal "harshness"
     t.index ["user_id"], name: "index_coffee_beans_on_user_id"
   end
 

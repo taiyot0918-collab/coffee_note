@@ -1,28 +1,68 @@
-<div class="bg-white rounded-xl shadow-sm p-6 max-w-lg">
-  <h1 class="text-2xl font-bold text-amber-900 mb-4"><%= @coffee_bean.name %></h1>
+<%# 戻るリンク %>
+<%= link_to "← 一覧に戻る", coffee_beans_path, class: "text-xs text-gray-400 hover:text-gray-700 transition mb-8 inline-block" %>
 
-  <dl class="grid grid-cols-2 gap-4 text-sm">
+<div class="bg-white border border-gray-100 rounded-xl p-8 ">
+  <h1 class="text-xl font-medium mb-6"><%= @coffee_bean.name %></h1>
+
+  <%# dl/dt/dd: 定義リスト。ラベルと値のセットを表現するのに適したHTML %>
+  <dl class="grid grid-cols-2 gap-y-5 text-sm">
     <div>
-      <dt class="text-gray-400">産地</dt>
-      <dd class="font-medium"><%= @coffee_bean.origin %></dd>
+      <dt class="text-xs text-gray-400 mb-1">産地</dt>
+      <dd class="font-medium"><%= @coffee_bean.origin.presence || "未登録" %></dd>
     </div>
     <div>
-      <dt class="text-gray-400">品種</dt>
-      <dd class="font-medium"><%= @coffee_bean.variety %></dd>
+      <dt class="text-xs text-gray-400 mb-1">品種</dt>
+      <dd class="font-medium"><%= @coffee_bean.variety.presence || "未登録" %></dd>
     </div>
     <div>
-      <dt class="text-gray-400">精製方法</dt>
-      <dd class="font-medium"><%= @coffee_bean.process %></dd>
+      <dt class="text-xs text-gray-400 mb-1">精製方法</dt>
+      <dd class="font-medium"><%= @coffee_bean.process.presence || "未登録" %></dd>
     </div>
     <div>
-      <dt class="text-gray-400">焙煎度</dt>
-      <dd class="font-medium"><%= @coffee_bean.roast_level %></dd>
+      <dt class="text-xs text-gray-400 mb-1">焙煎度</dt>
+      <dd class="font-medium">
+        <% if @coffee_bean.roast_level.present? %>
+          <%= ["", "浅煎り", "中浅煎り", "中煎り", "中深煎り", "深煎り"][@coffee_bean.roast_level] %>
+        <% else %>
+          未登録
+        <% end %>
+      </dd>
     </div>
   </dl>
 
-  <div class="flex gap-4 mt-6 text-sm">
-    <%= link_to "編集", edit_coffee_bean_path(@coffee_bean), class: "text-amber-600 hover:underline" %>
-    <%= link_to "削除", @coffee_bean, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "text-red-400 hover:underline" %>
-    <%= link_to "← 一覧に戻る", coffee_beans_path, class: "text-gray-400 hover:underline" %>
+  <%# 操作リンク %>
+  <div class="flex gap-5 mt-8 pt-6 border-t border-gray-100 text-xs">
+    <%= link_to "編集", edit_coffee_bean_path(@coffee_bean), class: "text-gray-500 hover:text-gray-900 transition" %>
+    <%# turbo_confirm: 削除前に確認ダイアログを表示する %>
+    <%= link_to "削除", @coffee_bean, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "text-red-400 hover:text-red-600 transition" %>
   </div>
+  <%# カッピングスコアが1つでも入力されていれば表示する %>
+    <% cupping_fields = [:flavor, :aftertaste, :acidity, :sweetness, :mouthfeel,
+                         :acidity_ripeness, :acidity_complexity,
+                         :thickness, :roughness, :dryness, :astringency, :harshness] %>
+    <% if cupping_fields.any? { |f| @coffee_bean.send(f).present? } %>
+      <div class="border-t border-gray-100 mt-6 pt-6">
+        <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Cupping Score</p>
+
+        <% {
+          "Taste Intensity" => { flavor: "Flavor", aftertaste: "Aftertaste", acidity: "Acidity", sweetness: "Sweetness", mouthfeel: "Mouthfeel" },
+          "Acidity" => { acidity_ripeness: "Ripeness", acidity_complexity: "Complexity" },
+          "Mouthfeel" => { thickness: "Thickness", roughness: "Roughness", dryness: "Dryness", astringency: "Astringency", harshness: "Harshness" }
+        }.each do |section, fields| %>
+          <p class="text-xs text-gray-400 mb-2 mt-4"><%= section %></p>
+          <% fields.each do |field, label| %>
+            <% val = @coffee_bean.send(field) %>
+            <% next unless val.present? %>
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-xs text-gray-500 w-28 flex-shrink-0"><%= label %></span>
+              <%# スコアバー: widthをパーセントで表現（最大5なので val/5*100） %>
+              <div class="flex-1 bg-gray-100 rounded-full h-1.5">
+                <div class="bg-neutral-800 h-1.5 rounded-full" style="width: <%= (val.to_f / 5 * 100).round %>%"></div>
+              </div>
+              <span class="text-xs font-medium w-6 text-right"><%= val.to_f %></span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
 </div>

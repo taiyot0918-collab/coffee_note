@@ -1,8 +1,8 @@
-<%= form_with model: @coffee_bean, class: "grid gap-4" do |f| %>
+<%# form_with: Railsが用意するフォームヘルパー。モデルに応じてPOST/PATCHを自動で切り替える %>
+<%= form_with model: @coffee_bean, class: "grid gap-5" do |f| %>
 
-  <%# エラーメッセージ %>
   <% if @coffee_bean.errors.any? %>
-    <div class="bg-red-50 text-red-600 text-sm rounded-lg p-3">
+    <div class="bg-red-50 text-red-600 text-sm rounded-lg p-4">
       <% @coffee_bean.errors.full_messages.each do |msg| %>
         <p><%= msg %></p>
       <% end %>
@@ -10,32 +10,120 @@
   <% end %>
 
   <div>
-    <%= f.label :name, "豆の名前", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= f.text_field :name, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+    <%= f.label :name, "豆の名前", class: "block text-xs text-gray-500 mb-1" %>
+    <%= f.text_field :name, class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
   <div>
-    <%= f.label :origin, "産地", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= f.text_field :origin, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+    <%= f.label :origin, "産地", class: "block text-xs text-gray-500 mb-1" %>
+    <%= f.text_field :origin, class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
   <div>
-    <%= f.label :variety, "品種", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= f.text_field :variety, class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+    <%= f.label :variety, "品種", class: "block text-xs text-gray-500 mb-1" %>
+    <%= f.text_field :variety, class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
   <div>
-    <%= f.label :process, "精製方法", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= f.text_field :process, placeholder: "ウォッシュド・ナチュラルなど", class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+    <%= f.label :process, "精製方法", class: "block text-xs text-gray-500 mb-1" %>
+    <%= f.text_field :process, placeholder: "ウォッシュド・ナチュラルなど", class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
   <div>
-    <%= f.label :roast_level, "焙煎度", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= f.select :roast_level, [["浅煎り", 1], ["中浅煎り", 2], ["中煎り", 3], ["中深煎り", 4], ["深煎り", 5]],
+    <%= f.label :roast_level, "焙煎度", class: "block text-xs text-gray-500 mb-1" %>
+    <%# collection_select的な使い方: 配列でプルダウンの選択肢を定義 %>
+    <%= f.select :roast_level,
+        [["浅煎り", 1], ["中浅煎り", 2], ["中煎り", 3], ["中深煎り", 4], ["深煎り", 5]],
         { include_blank: "選択してください" },
-        class: "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" %>
+        class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
   </div>
 
-  <%= f.submit class: "bg-amber-700 hover:bg-amber-800 text-white font-semibold py-2 rounded-lg cursor-pointer" %>
+  <%# カッピングスコアセクション %>
+    <div class="border-t border-gray-100 pt-5">
+      <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-5">Cupping Score</p>
+            
+      <%# Taste Intensity %>
+      <p class="text-xs text-gray-400 mb-3">Taste Intensity</p>
+      <% {
+        flavor: "Flavor",
+        aftertaste: "Aftertaste",
+        acidity: "Acidity",
+        sweetness: "Sweetness",
+        mouthfeel: "Mouthfeel"
+      }.each do |field, label| %>
+        <div class="flex items-center gap-3 mb-3">
+          <%# w-28: ラベルの幅を固定してスライダーの位置を揃える %>
+          <span class="text-xs text-gray-600 w-28 flex-shrink-0"><%= label %></span>
+          <%# data-field: JSでどのhidden inputと連動するか識別するため %>
+          <input type="range" min="0" max="5" step="0.5"
+                 value="<%= @coffee_bean.send(field) || 0 %>"
+                 class="flex-1 cupping-slider"
+                 data-field="<%= field %>">
+          <span class="text-xs font-medium w-6 text-right cupping-val" id="val-<%= field %>">
+            <%= @coffee_bean.send(field)&.to_f || 0.0 %>
+          </span>
+          <%# hidden_field: スライダーの値をフォーム送信時にRailsに渡すために必要 %>
+          <%= f.hidden_field field, class: "cupping-hidden", id: "hidden-#{field}" %>
+        </div>
+      <% end %>
+                
+      <%# Acidity %>
+      <p class="text-xs text-gray-400 mb-3 mt-5">Acidity</p>
+      <% {
+        acidity_ripeness: "Ripeness",
+        acidity_complexity: "Complexity"
+      }.each do |field, label| %>
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-xs text-gray-600 w-28 flex-shrink-0"><%= label %></span>
+          <input type="range" min="0" max="5" step="0.5"
+                 value="<%= @coffee_bean.send(field) || 0 %>"
+                 class="flex-1 cupping-slider"
+                 data-field="<%= field %>">
+          <span class="text-xs font-medium w-6 text-right cupping-val" id="val-<%= field %>">
+            <%= @coffee_bean.send(field)&.to_f || 0.0 %>
+          </span>
+          <%= f.hidden_field field, class: "cupping-hidden", id: "hidden-#{field}" %>
+        </div>
+      <% end %>
+                
+      <%# Mouthfeel %>
+      <p class="text-xs text-gray-400 mb-3 mt-5">Mouthfeel</p>
+      <% {
+        thickness: "Thickness",
+        roughness: "Roughness",
+        dryness: "Dryness",
+        astringency: "Astringency",
+        harshness: "Harshness"
+      }.each do |field, label| %>
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-xs text-gray-600 w-28 flex-shrink-0"><%= label %></span>
+          <input type="range" min="0" max="5" step="0.5"
+                 value="<%= @coffee_bean.send(field) || 0 %>"
+                 class="flex-1 cupping-slider"
+                 data-field="<%= field %>">
+          <span class="text-xs font-medium w-6 text-right cupping-val" id="val-<%= field %>">
+            <%= @coffee_bean.send(field)&.to_f || 0.0 %>
+          </span>
+          <%= f.hidden_field field, class: "cupping-hidden", id: "hidden-#{field}" %>
+        </div>
+      <% end %>
+    </div>
+
+  <%= f.submit class: "bg-neutral-900 hover:bg-neutral-700 text-white text-sm font-medium py-2 rounded-lg cursor-pointer transition" %>
 
 <% end %>
+
+<%# スライダーを動かすとhidden fieldの値とラベルの数値が連動して更新される %>
+<script>
+  document.querySelectorAll('.cupping-slider').forEach(slider => {
+    slider.addEventListener('input', function() {
+      const field = this.dataset.field
+      const val = parseFloat(this.value).toFixed(1)
+      document.getElementById('val-' + field).textContent = val
+      document.getElementById('hidden-' + field).value = val
+    })
+    // ページ読み込み時にhidden fieldの初期値をセット
+    const field = slider.dataset.field
+    document.getElementById('hidden-' + field).value = parseFloat(slider.value).toFixed(1)
+  })
+</script>

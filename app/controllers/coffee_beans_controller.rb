@@ -57,6 +57,11 @@ class CoffeeBeansController < ApplicationController
   # フォームから受け取るパラメーターを制限する（Strong Parameters）
   # 許可していないパラメーターは無視されるのでセキュリティ対策になる
   def coffee_bean_params
-    params.require(:coffee_bean).permit(:name, :origin, :variety, :process, :roast_level)
+    params.require(:coffee_bean).permit(
+      :name, :origin, :variety, :process, :roast_level,
+      :flavor, :aftertaste, :acidity, :sweetness, :mouthfeel,
+      :acidity_ripeness, :acidity_complexity,
+      :thickness, :roughness, :dryness, :astringency, :harshness
+    )
   end
 end
