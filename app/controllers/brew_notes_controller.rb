@@ -19,7 +19,7 @@ class BrewNotesController < ApplicationController
     if @brew_note.save
       redirect_to @brew_note, notice: "登録しました"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -30,7 +30,7 @@ class BrewNotesController < ApplicationController
     if @brew_note.update(brew_note_params)
       redirect_to @brew_note, notice: "更新しました"
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

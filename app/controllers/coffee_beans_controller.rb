@@ -20,13 +20,12 @@ class CoffeeBeansController < ApplicationController
   def create
     @coffee_bean = current_user.coffee_beans.build(coffee_bean_params)
     if @coffee_bean.save
-      # 保存成功 → 詳細ページにリダイレクト
       redirect_to @coffee_bean, notice: "登録しました"
     else
-      # 保存失敗 → フォームを再表示してエラーを見せる
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
+
 
   # 編集ページ: before_actionで@coffee_beanがセットされているので何も書かなくてOK
   def edit; end
@@ -36,7 +35,7 @@ class CoffeeBeansController < ApplicationController
     if @coffee_bean.update(coffee_bean_params)
       redirect_to @coffee_bean, notice: "更新しました"
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

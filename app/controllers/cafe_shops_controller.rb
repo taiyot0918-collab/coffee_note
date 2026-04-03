@@ -19,7 +19,8 @@ class CafeShopsController < ApplicationController
     if @cafe_shop.save
       redirect_to @cafe_shop, notice: "登録しました"
     else
-      render :new
+      # status: :unprocessable_entityを追加
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -30,7 +31,8 @@ class CafeShopsController < ApplicationController
     if @cafe_shop.update(cafe_shop_params)
       redirect_to @cafe_shop, notice: "更新しました"
     else
-      render :edit
+      # status: :unprocessable_entityを追加
+      render :edit, status: :unprocessable_entity
     end
   end
 
