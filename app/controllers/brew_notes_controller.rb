@@ -48,6 +48,10 @@ class BrewNotesController < ApplicationController
 
   # coffee_bean_idを許可することで、どの豆を使ったか紐付けられる
   def brew_note_params
-    params.require(:brew_note).permit(:coffee_bean_id, :tool, :dose, :water_amount, :water_temp, :brew_time, :taste_memo, :rating)
+    params.require(:brew_note).permit(
+      :coffee_bean_id, :tool, :dose, :water_amount,
+      :water_temp, :brew_time, :taste_memo, :rating,
+      :grinder, :grind_size
+    )
   end
 end

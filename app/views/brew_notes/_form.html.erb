@@ -17,9 +17,34 @@
 
   <div>
     <%= f.label :tool, "器具", class: "block text-xs text-gray-500 mb-1" %>
-    <%= f.select :tool, ["V60", "Aeropress", "フレンチプレス", "モカポット", "エスプレッソ", "その他"],
-        { include_blank: "選択してください" },
-        class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
+    <div class="flex items-center gap-2 mb-2">
+      <input type="checkbox" id="tool_custom" class="cursor-pointer"
+             <%= @brew_note.tool.present? && !["V60", "Aeropress", "フレンチプレス", "モカポット", "エスプレッソ", "その他"].include?(@brew_note.tool) ? "checked" : "" %>>
+      <label for="tool_custom" class="text-xs text-gray-400 cursor-pointer">自由入力する</label>
+    </div>
+    <div id="tool_select_wrap">
+      <%= f.select :tool, ["V60", "Aeropress", "フレンチプレス", "モカポット", "エスプレッソ", "その他"],
+          { include_blank: "選択してください" },
+          class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
+    </div>
+    <div id="tool_text_wrap" class="hidden">
+      <%= f.text_field :tool, placeholder: "例: Chemex、クレバードリッパーなど",
+          class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400",
+          id: "tool_text_input" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <%= f.label :grinder, "グラインダー", class: "block text-xs text-gray-500 mb-1" %>
+      <%= f.text_field :grinder, placeholder: "例: Comandante",
+          class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
+    </div>
+    <div>
+      <%= f.label :grind_size, "挽き目", class: "block text-xs text-gray-500 mb-1" %>
+      <%= f.number_field :grind_size, step: 0.5, placeholder: "例: 20",
+          class: "w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400" %>
+    </div>
   </div>
 
   <div class="grid grid-cols-2 gap-4">
@@ -60,3 +85,22 @@
   <%= f.submit class: "bg-neutral-900 hover:bg-neutral-700 text-white text-sm font-medium py-2 rounded-lg cursor-pointer transition" %>
 
 <% end %>
+
+<script>
+  const checkbox = document.getElementById('tool_custom')
+  const selectWrap = document.getElementById('tool_select_wrap')
+  const textWrap = document.getElementById('tool_text_wrap')
+
+  function toggleToolInput() {
+    if (checkbox.checked) {
+      selectWrap.classList.add('hidden')
+      textWrap.classList.remove('hidden')
+    } else {
+      selectWrap.classList.remove('hidden')
+      textWrap.classList.add('hidden')
+    }
+  }
+
+  toggleToolInput()
+  checkbox.addEventListener('change', toggleToolInput)
+</script>

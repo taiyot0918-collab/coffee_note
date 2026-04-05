@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_31_070714) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_05_071354) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_31_070714) do
     t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "grinder"
+    t.decimal "grind_size"
     t.index ["coffee_bean_id"], name: "index_brew_notes_on_coffee_bean_id"
     t.index ["user_id"], name: "index_brew_notes_on_user_id"
   end
