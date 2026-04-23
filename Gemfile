@@ -60,3 +60,5 @@ end
 
 
 gem "devise", "~> 5.0"
+
+gem "railroady", "~> 1.6"
